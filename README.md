@@ -1,13 +1,15 @@
-# Irene-Sankey Diagram  
+# Irene-Sankey  
 
 Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
 
+[![PyPI version](https://img.shields.io/pypi/v/irene_sankey.svg)](https://test.pypi.org/project/irene_sankey/)
+[![Python versions](https://img.shields.io/pypi/pyversions/irene_sankey.svg)](https://test.pypi.org/project/irene_sankey/)
+[![GitHub](https://img.shields.io/badge/GitHub-irene__sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
 
 ## Table of Contents
 
-- [Irene-Sankey Diagram](#irene-sankey-diagram)
-
+- [Irene-Sankey](#irene-sankey)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Features](#features)
@@ -74,7 +76,11 @@ df = pd.DataFrame(
 flow_df, node_map, link = traverse_sankey_flow(df, ["", "country", "industry", "field"])
 
 # Plot Sankey diagram 
-fig = plot_irene_sankey_diagram(node_map, link)
+fig = plot_irene_sankey_diagram(node_map, link, title = "Irene-Sankey Demo", node_config={
+        "pad": 10,
+        "line": dict(color="black", width=1),
+    }
+)
 fig.show()
 ```
 
@@ -108,5 +114,7 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 
 ## Acknowledgments
+
+I would like to express my heartfelt gratitude to everyone who contributed their knowledge and support, making this project possible. Special thanks to [Mike Bostock](https://observablehq.com/@mbostock) and [Yan Holtz](https://www.yan-holtz.com/) for their invaluable inspiration and insights, which profoundly influenced the direction and development of this project. Their expertise and knowledge were instrumental in shaping its final form. I am also grateful to the Plotly team for their incredible library, enabling the creation of beautiful, interactive visualizations that bring the data to life.
 
 Special thanks to the contributors and the open-source community for their support and feedback. The Sankey visualization method is inspired by [Matplotlib's Sankey capabilities](https://matplotlib.org/stable/gallery/specialty_plots/sankey_basics.html), with enhancements for customization and usability.
