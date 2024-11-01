@@ -1,4 +1,3 @@
-
 # Irene-Sankey Diagram  
 
 Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
@@ -8,6 +7,7 @@ Irene-Sankey is a Python library that enables the creation of customizable and i
 ## Table of Contents
 
 - [Irene-Sankey Diagram](#irene-sankey-diagram)
+
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Features](#features)
