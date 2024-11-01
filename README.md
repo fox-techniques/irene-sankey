@@ -1,16 +1,13 @@
-
-# Irene-Sankey Diagram Generator  
+# Irene-Sankey Diagram  
 
 Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
 
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/irene-sankey)
-![PyPI](https://img.shields.io/pypi/v/irene-sankey)
-![License](https://img.shields.io/github/license/fox-techniques/irenesankey)
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
 
 ## Table of Contents
 
-- [Irene-Sankey Diagram Generator](#irene-sankey-diagram-generator)
+- [Irene-Sankey Diagram](#irene-sankey-diagram)
+
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Features](#features)
