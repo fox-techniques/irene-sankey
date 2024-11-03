@@ -1,11 +1,13 @@
 # Irene-Sankey  
 
-Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
+<img src="https://github.com/fox-techniques/irene-sankey/blob/main/images.logo.png" alt="Irene-Sankey Logo" width="88" align="left" style="margin-right: 10px;"/> Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
 
-[![PyPI version](https://img.shields.io/pypi/v/irene_sankey.svg)](https://test.pypi.org/project/irene_sankey/)
-[![Python versions](https://img.shields.io/pypi/pyversions/irene_sankey.svg)](https://test.pypi.org/project/irene_sankey/)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-darkcyan)](https://pypi.org/project/irene-senkey/)
+[![PyPI Latest Release](https://img.shields.io/pypi/v/irene-sankey.svg?label=PyPI%20Version)](https://pypi.org/project/irene-sankey/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/irene-sankey.svg?label=PyPI%20Downloads)](
+https://pypi.org/project/irene-sankey/)
 [![GitHub](https://img.shields.io/badge/GitHub-irene__sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
 
 ## Table of Contents
 
@@ -43,7 +45,7 @@ Install **Irene-Sankey** using pip:
 pip install irene_sankey
 ```
 
-> **Note**: Requires Python 3.7 or above.
+> **Note**: Requires Python 3.8 or above.
 
 
 ## Quick Start
