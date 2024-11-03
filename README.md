@@ -41,7 +41,7 @@ https://pypi.org/project/irene-sankey/)
 Install **Irene-Sankey** using pip:
 
 ```bash
-pip install irene_sankey
+pip install irene-sankey
 ```
 
 > **Note**: Requires Python 3.8 or above.
@@ -92,7 +92,7 @@ The core function in the **Irene-Sankey** package is `traverse_sankey_flow`. By 
 
 ## Contribution
 
-We welcome contributions! To contribute:
+We welcome contributions! Visit our [Github](https://github.com/fox-techniques/irene-sankey) repository, and to contribute:
 
 1. Fork the repository.
 2. Create a branch (`git checkout -b feature/NewFeature`).
