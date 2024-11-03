@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="irene-sankey",
-    version="0.2.0",
+    version="1.0.0",
     author="Fox Techniques",
-    author_email="fox-techniques@outlook.com",
+    author_email="foxtechniques@gmail.com",
     description="A package for generating source-target pair and node map from pandas DataFrames for Sankey flow diagrams",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
