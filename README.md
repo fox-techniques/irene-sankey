@@ -1,6 +1,6 @@
 # Irene-Sankey  
 
-<img src="https://github.com/fox-techniques/irene-sankey/blob/main/images.logo.png" alt="Irene-Sankey Logo" width="88" align="left" style="margin-right: 10px;"/> Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
+<img src="https://github.com/fox-techniques/irene-sankey/blob/main/images/logo.png" alt="Irene-Sankey Logo" width="88" align="left" style="margin-right: 10px;"/> Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-darkcyan)](https://pypi.org/project/irene-senkey/)
 [![PyPI Latest Release](https://img.shields.io/pypi/v/irene-sankey.svg?label=PyPI%20Version)](https://pypi.org/project/irene-sankey/)
