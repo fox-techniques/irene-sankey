@@ -8,13 +8,13 @@ Irene-Sankey with:
 === "Latest"
 
     ``` sh
-    pip install irene_sankey
+    pip install irene-sankey
     ```
 
 === "1.x"
 
     ``` sh
-    pip install irene_sankey=="1.*" # (1)!
+    pip install irene-sankey=="1.*" # (1)!
     ```
 
     1.  Irene-Sankey uses [semantic versioning].

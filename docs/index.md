@@ -8,11 +8,8 @@ Irene-Sankey is a python package that enables the creation of customizable and i
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-darkcyan)](https://pypi.org/project/irene-senkey/)
 [![PyPI Latest Release](https://img.shields.io/pypi/v/irene-sankey.svg?label=PyPI%20Version)](https://pypi.org/project/irene-sankey/)
-[![PyPI Downloads](https://img.shields.io/pypi/dm/irene-sankey.svg?label=PyPI%20Downloads)](
-https://pypi.org/project/irene-sankey/)
-
-[![GitHub](https://img.shields.io/badge/GitHub-irene__sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-irene--sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
 
 
 ## Key Features
