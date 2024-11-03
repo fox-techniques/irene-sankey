@@ -4,15 +4,14 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-darkcyan)](https://pypi.org/project/irene-senkey/)
 [![PyPI Latest Release](https://img.shields.io/pypi/v/irene-sankey.svg?label=PyPI%20Version)](https://pypi.org/project/irene-sankey/)
-[![PyPI Downloads](https://img.shields.io/pypi/dm/irene-sankey.svg?label=PyPI%20Downloads)](
-https://pypi.org/project/irene-sankey/)
-[![GitHub](https://img.shields.io/badge/GitHub-irene__sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-irene--sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
 
 ## Table of Contents
 
 - [Irene-Sankey](#irene-sankey)
   - [Table of Contents](#table-of-contents)
+  - [Documentation](#documentation)
   - [Overview](#overview)
   - [Features](#features)
   - [Installation](#installation)
@@ -22,6 +21,9 @@ https://pypi.org/project/irene-sankey/)
   - [License](#license)
   - [Acknowledgments](#acknowledgments)
 
+## Documentation
+
+The full documentation is available on **[GitHub Pages](https://fox-techniques.github.io/irene-sankey/)**.
 
 ## Overview
 
