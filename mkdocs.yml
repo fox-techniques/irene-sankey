@@ -32,12 +32,19 @@ nav:
   - Home: index.md
   - Installation: installation.md
   - Demo: demo.md
-  - License: license.md
+  - Support: SUPPORT.md
+  - Contributing: CONTRIBUTING.md
+  - Code of Conduct: CODE_OF_CONDUCT.md
+  - Security Policies: SECURITY.md
+  - License: LICENSE.md
+  - Credits: CREDITS.md
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/fox-techniques/irene-sankey
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/foxtechniques/
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/fox-techniques/
 
