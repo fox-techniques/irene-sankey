@@ -13,13 +13,14 @@ env:
 
 jobs:
   details:
+    name: Details
     runs-on: ubuntu-latest
     outputs:
       new_version: ${{ steps.release.outputs.new_version }}
       suffix: ${{ steps.release.outputs.suffix }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Extract tag and Details
         id: release
@@ -40,6 +41,7 @@ jobs:
           fi
 
   check_pypi:
+    name: Check PyPI
     needs: details
     runs-on: ubuntu-latest
     steps:
@@ -66,10 +68,11 @@ jobs:
           fi
 
   setup_and_build:
+    name: Setup and Build
     needs: [details, check_pypi]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -126,7 +129,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
