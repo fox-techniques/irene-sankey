@@ -1,3 +1,28 @@
+[tool.poetry]
+package-mode = true
+name = "irene-sankey"
+version = "1.0.1"
+description = "A package for generating source-target pair and node map from pandas DataFrames for Sankey flow diagrams"
+authors = ["Fox Techniques <foxtechniques@gmail.com>"]
+homepage = "https://github.com/fox-techniques/irene-sankey"
+license = "MIT"
+readme = "README.md"
+packages = [{include = "irene_sankey"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.32.3"
+plotly = "^5.24.1"
+pandas = "^2.2.3"
+numpy = "^2.1.3"
+mkdocs-material = "^9.5.43"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.3.3"
+
+[tool.poetry.urls]
+"Homepage" = "https://github.com/fox-techniques/irene-sankey"
+
 [build-system]
-requires = ["setuptools>=42", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

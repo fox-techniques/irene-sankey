@@ -1,5 +1,6 @@
+# Installation 
 
-### with pip <small>recommended</small> { #with-pip data-toc-label="with pip" }
+## with pip <small>recommended</small> { #with-pip data-toc-label="with pip" }
 
 Irene-Sankey is published as a python package and can be installed with
 `pip`, ideally by using a [virtual environment]. Open up a terminal and install
@@ -52,7 +53,8 @@ install those packages separately.
   [semantic versioning]: https://semver.org/
   [Using Python's pip to Manage Your Projects' Dependencies]: https://realpython.com/what-is-pip/
 
-### with git
+
+## with git
 
 Irene-Sankey can be directly used from [GitHub] by cloning the
 repository into a subfolder of your project root which might be useful if you
@@ -67,10 +69,46 @@ Next, install the theme and its dependencies with:
 ```
 pip install -e irene-sankey
 ```
+
+## with poetry
+
+Prerequisites:
+
+- Python 3.8 or higher
+- [Poetry]
+
+Installing Irene-Sankey:
+
+```bash
+poetry add irene-sankey
+```
+
+This command downloads and installs the package and its dependencies and adds the package as a dependency in your `pyproject.toml`.
+
+Using the Package:
+
+After installation, you can start using the package in your project. If you need to enter the virtual environment managed by Poetry, run:
+
+```bash
+poetry shell
+```
+
+Verify the Installation:
+
+```bash
+poetry show irene-sankey
+```
+
+Updating the Package:
+
+```bash
+poetry update irene-sankey
+```
+
   [Irene-Sankey]: https://pypi.org/project/irene-sankey/
   [GitHub]: https://github.com/fox-techniques/irene-sankey
   [numpy]: https://pypi.org/project/numpy/
   [pandas]: https://pypi.org/project/pandas/
   [plotly]: https://pypi.org/project/plotly/
   [requests]: https://pypi.org/project/requests/
-  
+  [Poetry]: https://python-poetry.org/docs/#installation

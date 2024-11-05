@@ -1,46 +1,18 @@
-### Irene-Sankey Demo
+# Demo 
 
-Once the Irene-Sankey package is installed, you can use it in your projects. Here’s an example of how to use it: 
+## Irene-Sankey Demo
 
-```py title="irene_sankey_demo.py" linenums="1"
-import pandas as pd
-from irene_sankey.core.traverse import traverse_sankey_flow
-from irene_sankey.plots.sankey import plot_irene_sankey_diagram
+The output of the `plot_irene_sankey_diagram` and `traverse_sankey_flow` function provides three structured components that represent the flow of data for generating a Sankey diagram. Here’s what each component looks like:
 
-# Sample data to test the functionality
-df = pd.DataFrame(
-    {
-        "country": ["NL","NL","NL","DE","DE","FR","FR","FR","US","US","US"],
-        "industry": [
-            "Technology","Finance","Healthcare",
-            "Automotive","Engineering",
-            "Technology","Agriculture","Healthcare",
-            "Manufacturing","Technology","Finance"],
-        "field": [
-            "Software","Banking","Pharmaceuticals",
-            "Car Manufacturing","Mechanical Engineering",
-            "Software","Crop Science","Medical Devices",
-            "Electronics","AI & Robotics","Investment Banking"],
-    }
-)
 
-# Generate source-target pair, node map and link for Sankey diagrams
-flow_df, node_map, link = traverse_sankey_flow(df, ["", "country", "industry", "field"])
+=== "Sankey Plot"
 
-# Plot Sankey diagram 
-fig = plot_irene_sankey_diagram(node_map, link, title = "Irene-Sankey Demo", node_config={
-        "pad": 10,
-        "line": dict(color="black", width=1),
-    }
-)
-fig.show()
-```
+    ![Demo plot](assets/plot-demo.png){ width=800 }
 
-The output of the `traverse_sankey_flow` function provides three structured components that represent the flow of data for generating a Sankey diagram. Here’s what each component looks like:
 
-=== "df"
+=== "input_df"
 
-    The input dataframe `df` for this demo:
+    The input dataframe `input_df` for this demo:
 
     |  country|       industry|                   field|
     | ------- | ------------- | ---------------------- |
@@ -154,9 +126,51 @@ The output of the `traverse_sankey_flow` function provides three structured comp
 
     ```
 
-=== "Sankey Plot"
+## How to Use
 
-    ![Demo plot](assets/plot-demo.png){ width=800 }
+Once the Irene-Sankey package is installed, you can use it in your projects. Here’s the code of the demo: 
+
+```py title="irene_sankey_demo.py" linenums="1"
+import pandas as pd
+from irene_sankey.core.traverse import traverse_sankey_flow
+from irene_sankey.plots.sankey import plot_irene_sankey_diagram
+
+# Sample data to test the functionality
+input_df = pd.DataFrame(
+    {
+        "country": ["NL","NL","NL","DE","DE","FR","FR","FR","US","US","US"],
+        "industry": [
+            "Technology","Finance","Healthcare",
+            "Automotive","Engineering",
+            "Technology","Agriculture","Healthcare",
+            "Manufacturing","Technology","Finance"],
+        "field": [
+            "Software","Banking","Pharmaceuticals",
+            "Car Manufacturing","Mechanical Engineering",
+            "Software","Crop Science","Medical Devices",
+            "Electronics","AI & Robotics","Investment Banking"],
+    }
+)
+
+# Generate source-target pair, node map and link for Sankey diagrams
+flow_df, node_map, link = traverse_sankey_flow(input_df, ["", "country", "industry", "field"])
+
+# Plot Sankey diagram 
+fig = plot_irene_sankey_diagram(node_map, link, title = "Irene-Sankey Demo", node_config={
+        "pad": 10,
+        "line": dict(color="black", width=1),
+    }
+)
+fig.show()
+```
+!!! tip
+
+    You can use `node_map` and `link` with your own Plotly’s Sankey diagram functions.
+
+
+Thank you for exploring our demo! We hope this example has given you a clear understanding of how to utilize our package and integrate its features into your projects. Whether you're just getting started or diving deeper, our goal is to make your experience as seamless and productive as possible.
+
+Happy coding!
 
   [Irene-Sankey]: https://pypi.org/project/irene-sankey/
   [virtual environment]: https://realpython.com/what-is-pip/#using-pip-in-a-python-virtual-environment
