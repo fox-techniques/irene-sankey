@@ -1,14 +1,10 @@
-name: release-to-PyPI
+name: publish-to-PyPI
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
-      - "v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+"
-      - "v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+"
-      - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"
+    
 
 env:
   PACKAGE_NAME: "irene-sankey"
@@ -107,6 +103,7 @@ jobs:
     environment:
       name: release
     permissions:
+      # In order to use Trusted Publisher
       id-token: write
       contents: read
 
@@ -119,9 +116,6 @@ jobs:
 
       - name: Publish distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_TOKEN }}
 
   github_release:
     name: Create GitHub Release
