@@ -18,7 +18,7 @@ jobs:
   details:
     name: Details
     runs-on: ubuntu-latest
-    environment: requires-approval
+    environment: release-with-approval
     outputs:
       new_version: ${{ steps.release.outputs.new_version }}
       suffix: ${{ steps.release.outputs.suffix }}
