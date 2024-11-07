@@ -23,7 +23,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: requires-approval
+    environment: release-with-approval
     
     steps:
       - uses: actions/checkout@v4
