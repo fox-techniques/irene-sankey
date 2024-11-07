@@ -8,7 +8,14 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"          
       - "v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+" 
       - "v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+"  
-      - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"   
+      - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"
+      
+  pull_request:
+    branches: 
+      - main
+    paths: 
+      - 'docs/**'
+      - 'mkdocs.yml'
 
 permissions:
   contents: write
