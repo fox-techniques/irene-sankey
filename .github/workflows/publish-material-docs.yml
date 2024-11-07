@@ -1,6 +1,9 @@
 name: publish-material-docs
 on:
   push:
+    paths: 
+      - 'docs/**'
+      - 'mkdocs.yml'
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"          
       - "v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+" 
