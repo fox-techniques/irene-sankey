@@ -22,7 +22,7 @@ Irene-Sankey is a python package that enables the creation of customizable and i
 
 ## Quick Links
 
-- [PyPI](https://pypi.org/project/irene-senkey)
+- [PyPI](https://pypi.org/project/irene-sankey)
 - [GitHub Repository](https://github.com/fox-techniques/irene-sankey)
 - [License](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
 
