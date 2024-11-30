@@ -1,0 +1,52 @@
+name: Publish Material Docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      # Step 3: Set a dynamic cache ID (fix the issue)
+      - name: Set cache ID
+        run: |
+          CACHE_ID=$(date --utc '+%V')
+          echo "cache_id=$CACHE_ID" >> "$GITHUB_ENV"
+
+      # Step 4: Cache pip dependencies
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          key: pip-cache-${{ env.CACHE_ID }}
+          path: ~/.cache/pip
+          restore-keys: |
+            pip-cache-
+
+      # Step 5: Install MkDocs and Material theme
+      - name: Install Dependencies
+        run: |
+          pip install mkdocs-material
+
+      # Step 6: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
