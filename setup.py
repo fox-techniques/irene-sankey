@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="irene-sankey",
-    version="1.0.1",
+    version="1.0.2",
     author="Fox Techniques",
     author_email="info@fox-techniques.com",
     description="A package for generating source-target pair and node map from pandas DataFrames for Sankey flow diagrams",
@@ -11,8 +11,8 @@ setup(
     url="https://github.com/fox-techniques/irene-sankey",
     packages=find_packages(),
     install_requires=[
-        "numpy>=2.1.2",
-        "pandas>=2.2.3",
+        "numpy>=1.24,<2.0",
+        "pandas>=2.0,<2.1",
         "requests>=2.32.3",
         "plotly>=5.24.1",
     ],
@@ -22,5 +22,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.10",
+    python_requires=">=3.8",
 )
