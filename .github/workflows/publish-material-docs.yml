@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      
+
   workflow_dispatch:
 
 permissions:
@@ -43,7 +43,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git init
           git remote add origin https://github.com/${{ github.repository }}.git
-          git checkout -b gh-pages
+          git checkout -b docs-gh-pages
           cp -r site/* .
           git add .
           git commit -m "Deploy MkDocs site"
