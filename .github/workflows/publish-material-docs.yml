@@ -1,24 +1,30 @@
-name: Publish Material Docs
+name: Deploy MkDocs to GitHub Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
     branches:
       - main
-    paths:
-      - 'docs/**'
-      - 'mkdocs.yml'
+
+  # Allows manual execution from the Actions tab
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  # Build job
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Check out the repository
-      - name: Checkout Repository
+      # Step 1: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       # Step 2: Set up Python
@@ -27,31 +33,30 @@ jobs:
         with:
           python-version: 3.x
 
-      # Step 3: Set a dynamic cache ID (fix the issue)
-      - name: Set cache ID
-        run: |
-          CACHE_ID=$(date --utc '+%V')
-          echo "cache_id=$CACHE_ID" >> "$GITHUB_ENV"
-
-      # Step 4: Cache pip dependencies
-      - name: Cache pip dependencies
-        uses: actions/cache@v4
-        with:
-          key: pip-cache-${{ env.CACHE_ID }}
-          path: ~/.cache/pip
-          restore-keys: |
-            pip-cache-
-
-      # Step 5: Install MkDocs and Material theme
-      - name: Install Dependencies
+      # Step 3: Install MkDocs and dependencies
+      - name: Install MkDocs
         run: |
           pip install mkdocs-material
 
-      # Step 5: Build MkDocs Site
-      - name: Build Documentation
-        run: |
-          mkdocs build
+      # Step 4: Build the MkDocs site
+      - name: Build the site
+        run: mkdocs build --clean
 
-      # Step 7: Deploy to GitHub Pages
+      # Step 5: Upload the built site as an artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Step 1: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+        id: deployment
+        uses: actions/deploy-pages@v4
