@@ -5,53 +5,27 @@ on:
     branches:
       - main
 
-  workflow_dispatch:
-
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
+  
 jobs:
-  build-and-deploy:
-    name: Build & Deploy
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # Step 2: Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-
-      # Step 3: Set cache ID
-      - name: Set Cache ID
-        run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
-
-      # Step 4: Cache pip dependencies
-      - name: Cache pip dependencies
-        uses: actions/cache@v4
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+      - uses: actions/cache@v4
         with:
-          path: ~/.cache/pip
-          key: pip-cache-${{ env.cache_id }}
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
           restore-keys: |
-            pip-cache-
-
-      # Step 5: Install MkDocs and dependencies
-      - name: Install MkDocs
-        run: |
-          pip install mkdocs-material
-
-      # Step 6: Build the MkDocs site
-      - name: Build MkDocs
-        run: mkdocs build --clean
-
-      # Step 7: Deploy to GitHub Pages (Manual Deployment)
-      - name: Deploy to gh-pages
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          mkdocs gh-deploy --force
+            mkdocs-material-
+      - run: pip install mkdocs-material 
+      - run: mkdocs gh-deploy --force
