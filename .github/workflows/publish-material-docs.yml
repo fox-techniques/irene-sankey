@@ -47,6 +47,11 @@ jobs:
         run: |
           pip install mkdocs-material
 
-      # Step 6: Deploy to GitHub Pages
+      # Step 5: Build MkDocs Site
+      - name: Build Documentation
+        run: |
+          mkdocs build
+
+      # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
