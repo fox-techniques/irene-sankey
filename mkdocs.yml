@@ -41,6 +41,8 @@ nav:
 
 extra:
   social:
+    - icon: fontawesome/solid/envelope
+      link: mailto:contact+irene@fox-techniques.com?subject=Inquiry%20about%20Irene-Sankey
     - icon: fontawesome/brands/github
       link: https://github.com/fox-techniques/irene-sankey
     - icon: fontawesome/brands/slack
