@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 permissions:
@@ -12,8 +13,8 @@ permissions:
   id-token: write
 
 jobs:
-  # Build job
-  build:
+  build-and-deploy:
+    name: Build & Deploy
     runs-on: ubuntu-latest
     steps:
       # Step 1: Checkout the repository
@@ -26,42 +27,31 @@ jobs:
         with:
           python-version: 3.x
 
-      # Step 3: Cache Python dependencies
-      - name: Cache pip
+      # Step 3: Set cache ID
+      - name: Set Cache ID
+        run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+
+      # Step 4: Cache pip dependencies
+      - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: pip-cache-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+          key: pip-cache-${{ env.cache_id }}
           restore-keys: |
-            pip-cache-${{ runner.os }}
+            pip-cache-
 
-      # Step 4: Install MkDocs and dependencies
+      # Step 5: Install MkDocs and dependencies
       - name: Install MkDocs
         run: |
           pip install mkdocs-material
 
-      # Step 5: Build the MkDocs site
+      # Step 6: Build the MkDocs site
       - name: Build MkDocs
         run: mkdocs build --clean
 
-      # Step 6: Upload build artifacts
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: github-pages
-          path: ./site
-
-  # Deploy job
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      # Step 1: Download build artifact
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-
-      # Step 2: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+      # Step 7: Deploy to GitHub Pages (Manual Deployment)
+      - name: Deploy to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdocs gh-deploy --force
