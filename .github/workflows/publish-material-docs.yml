@@ -2,13 +2,12 @@ name: publish-material-docs
 
 on:
   push:
-    branches:
-      - main
-  
     paths:
       - 'docs/**'
       - 'mkdocs.yml'
-  
+    branches:
+      - main 
+      
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"          
       - "v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+" 
@@ -24,7 +23,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: release-with-approval
-    
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Repository
@@ -36,16 +35,25 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # Step 3: Setup Python Environment
+      # Step 3: Setup Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
 
-      # Step 4: Install Dependencies
-      - name: Install MkDocs and Material Theme
+      # Step 4: Setup Cache
+      - name: Setup Cache for MkDocs Dependencies
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ hashFiles('**/mkdocs.yml') }}
+          path: ~/.cache/pip
+          restore-keys: |
+            mkdocs-material-
+
+      # Step 5: Install Dependencies
+      - name: Install MkDocs Material and Plugins
         run: pip install mkdocs-material
 
-      # Step 5: Deploy to GitHub Pages
+      # Step 6: Build and Deploy
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force --remote-branch gh-pages
