@@ -12,14 +12,6 @@ theme:
   logo: assets/favicon.png
   favicon: assets/favicon.png
   palette:
-    # Dark Mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-7
-        name: Dark mode
-      primary: teal
-      accent: cyan
-
     # Light Mode
     - scheme: default
       toggle:
@@ -27,6 +19,14 @@ theme:
         name: Light mode
       primary: blue grey
       accent: deep orange
+    
+    # Dark Mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-7
+        name: Dark mode
+      primary: teal
+      accent: cyan
 
 nav:
   - Home: index.md
@@ -51,16 +51,6 @@ extra:
       link: https://x.com/foxtechniques/
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/fox-techniques/
-
-  consent:
-    title: Cookie consent
-    description: >- 
-      We use cookies to recognize your repeated visits and preferences, as well
-      as to measure the effectiveness of our documentation and whether users
-      find what they're searching for. With your consent, you're helping us to
-      make our documentation better.
-  version:
-    provider: mike
 
 copyright: Copyright &copy; 2024 Fox-Techniques
 
