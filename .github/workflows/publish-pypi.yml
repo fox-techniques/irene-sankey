@@ -16,33 +16,25 @@ env:
 
 jobs:
   details:
-    name: Details
+    name: Extract Tag Details
     runs-on: ubuntu-latest
     environment: release-with-approval
     outputs:
-      new_version: ${{ steps.release.outputs.new_version }}
-      suffix: ${{ steps.release.outputs.suffix }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
+      new_version: ${{ steps.extract_tag.outputs.new_version }}
+      suffix: ${{ steps.extract_tag.outputs.suffix }}
+      tag_name: ${{ steps.extract_tag.outputs.tag_name }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Extract tag and Details
-        id: release
+      - name: Extract Tag and Details
+        id: extract_tag
         run: |
-          if [ "${{ github.ref_type }}" = "tag" ]; then
-            TAG_NAME=${GITHUB_REF#refs/tags/}
-            NEW_VERSION=$(echo $TAG_NAME | awk -F'-' '{print $1}')
-            SUFFIX=$(echo $TAG_NAME | grep -oP '[a-z]+[0-9]+' || echo "")
-            echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
-            echo "suffix=$SUFFIX" >> "$GITHUB_OUTPUT"
-            echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
-            echo "Version is $NEW_VERSION"
-            echo "Suffix is $SUFFIX"
-            echo "Tag name is $TAG_NAME"
-          else
-            echo "No tag found"
-            exit 1
-          fi
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          NEW_VERSION=$(echo $TAG_NAME | awk -F'-' '{print $1}')
+          SUFFIX=$(echo $TAG_NAME | grep -oP '[a-z]+[0-9]+' || echo "")
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "suffix=$SUFFIX" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 
   test_backward_compatibility:
     name: Test Backward Compatibility
@@ -50,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
 
@@ -72,7 +64,7 @@ jobs:
     needs: [details, test_backward_compatibility]
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch information from PyPI
+      - name: Fetch PyPI Version
         run: |
           response=$(curl -s https://pypi.org/pypi/${{ env.PACKAGE_NAME }}/json || echo "{}")
           latest_previous_version=$(echo $response | grep -oP '"releases":\{"\K[^"]+' | sort -rV | head -n 1)
@@ -83,7 +75,7 @@ jobs:
           echo "Latest version on PyPI: $latest_previous_version"
           echo "latest_previous_version=$latest_previous_version" >> $GITHUB_ENV
 
-      - name: Compare versions and exit if not newer
+      - name: Compare Versions
         run: |
           NEW_VERSION=${{ needs.details.outputs.new_version }}
           LATEST_VERSION=$latest_previous_version
@@ -111,62 +103,56 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Set project version with Poetry
-        run: |
-          poetry version ${{ needs.details.outputs.new_version }}
+      - name: Set Project Version
+        run: poetry version ${{ needs.details.outputs.new_version }}
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: poetry install --sync --no-interaction
 
-      - name: Build source and wheel distribution
-        run: |
-          poetry build
+      - name: Build Distribution
+        run: poetry build
 
-      - name: Upload artifacts
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/
 
   pypi_publish:
-    name: Upload release to PyPI
-    needs: [setup_and_build, details]
+    name: Publish to PyPI
+    needs: [setup_and_build]
     runs-on: ubuntu-latest
-    environment:
-      name: release
     permissions:
-      id-token: write
       contents: read
-
     steps:
-      - name: Download artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
 
-      - name: Publish distribution to PyPI
+      - name: Publish Distribution
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
 
   github_release:
     name: Create GitHub Release
-    needs: [setup_and_build, details]
+    needs: [setup_and_build]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Download artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
 
-      - name: Check if release already exists
+      - name: Check if Release Exists
         id: check_release
         run: |
           if gh release view ${{ needs.details.outputs.tag_name }} > /dev/null 2>&1; then
@@ -177,8 +163,5 @@ jobs:
 
       - name: Create GitHub Release
         if: env.skip == 'false'
-        id: create_release
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           gh release create ${{ needs.details.outputs.tag_name }} dist/* --title ${{ needs.details.outputs.tag_name }} --generate-notes
