@@ -47,6 +47,8 @@ extra:
       link: https://github.com/fox-techniques/irene-sankey
     - icon: fontawesome/brands/slack
       link: https://join.slack.com/t/irene-sankey/shared_invite/zt-2tx8bjefp-nZu1EnLZP165mGvPlP9t_Q
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/qhNuwspeG4
     - icon: fontawesome/brands/x-twitter
       link: https://x.com/foxtechniques/
     - icon: fontawesome/brands/linkedin

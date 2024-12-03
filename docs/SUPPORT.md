@@ -12,7 +12,7 @@ Please seek support in the following ways:
 
 2. :bulb: **Search for answers and ask questions on [Stack Overflow](https://stackoverflow.com).** This is the most appropriate place for debugging issues specific to your use of the project, or figuring out how to use the project in a specific way.
 
-3. :speech_balloon: Irene-sankey does not provide any sort of "customer support" for open-source projects. However, **we are available for consulting via our [Slack](https://join.slack.com/t/irene-sankey/shared_invite/zt-2tx8bjefp-nZu1EnLZP165mGvPlP9t_Q) channel** but give us some time, we are not the fastest :snail:. 
+3. :speech_balloon: Irene-sankey does not provide any sort of "customer support" for open-source projects. However, **we are available for consulting via our [Discord](https://discord.gg/qhNuwspeG4) or [Slack](https://join.slack.com/t/irene-sankey/shared_invite/zt-2tx8bjefp-nZu1EnLZP165mGvPlP9t_Q) channels** but give us some time, we are not the fastest :snail:. 
 
 4. :memo: As a **last resort**, you may open an issue on GitHub to ask for help. However, please clearly explain what you are trying to do, and list what you have already attempted to solve the problem. Provide code samples, but **do not** attach your entire project for someone else to debug.
 
