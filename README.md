@@ -90,7 +90,7 @@ fig.show()
 
 ## Usage
 
-The core function in the **Irene-Sankey** package is `traverse_sankey_flow`. By passing a pandas DataFrame and selecting string columns in the order of the flow, you can quickly generate a required source-targer pair map to generate Sankey diagram.
+The core function in the **Irene-Sankey** package is `traverse_sankey_flow`. By passing a pandas DataFrame and selecting string columns in the order of the flow, you can quickly generate a required source-target pair map to generate Sankey diagram.
 
 
 ## Contribution
