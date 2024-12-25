@@ -21,7 +21,6 @@ jobs:
     environment: release-with-approval
     outputs:
       new_version: ${{ steps.extract_tag.outputs.new_version }}
-      suffix: ${{ steps.extract_tag.outputs.suffix }}
       tag_name: ${{ steps.extract_tag.outputs.tag_name }}
     steps:
       - uses: actions/checkout@v4
@@ -31,9 +30,7 @@ jobs:
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}
           NEW_VERSION=$(echo $TAG_NAME | awk -F'-' '{print $1}')
-          SUFFIX=$(echo $TAG_NAME | grep -oP '[a-z]+[0-9]+' || echo "")
           echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
-          echo "suffix=$SUFFIX" >> "$GITHUB_OUTPUT"
           echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Check if GitHub Release Exists
@@ -50,7 +47,7 @@ jobs:
         id: check_pypi
         run: |
           response=$(curl -s https://pypi.org/pypi/${{ env.PACKAGE_NAME }}/json || echo "{}")
-          latest_previous_version=$(echo $response | grep -oP '"releases":\{"\K[^"]+' | sort -rV | head -n 1)
+          latest_previous_version=$(echo $response | jq -r '.releases | keys_unsorted | sort | .[-1]')
           if [ -z "$latest_previous_version" ]; then
             echo "Package not found on PyPI."
             latest_previous_version="0.0.0"
@@ -129,6 +126,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      actions: write
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -147,6 +145,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -156,6 +156,13 @@ jobs:
         with:
           name: dist
           path: dist/
+
+      - name: Ensure dist is not empty
+        run: |
+          if [ -z "$(ls -A dist)" ]; then
+            echo "No distribution files found to upload."
+            exit 1
+          fi
 
       - name: Create GitHub Release
         run: |
