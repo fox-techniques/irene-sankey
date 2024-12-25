@@ -1,9 +1,9 @@
 [tool.poetry]
 package-mode = true
 name = "irene-sankey"
-version = "1.0.2"
+version = "1.1.2"
 description = "A package for generating source-target pair and node map from pandas DataFrames for Sankey flow diagrams"
-authors = ["Fox Techniques <info@fox-techniques.com>"]
+authors = ["FOX Techniques <info+irene@fox-techniques.com>"]
 homepage = "https://github.com/fox-techniques/irene-sankey"
 license = "MIT"
 readme = "README.md"
