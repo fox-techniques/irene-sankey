@@ -52,7 +52,7 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/fox-techniques/
 
-copyright: Copyright &copy; 2024 Fox-Techniques
+copyright: Copyright &copy; 2024 FOX Techniques
 
 markdown_extensions:
   - tables
