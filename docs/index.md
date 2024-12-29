@@ -4,6 +4,8 @@ title: Irene-Sankey Python Package
 
 # Irene-Sankey
 
+![Irene Flyer](assets/irene-flyer.png){ width=200 }
+
 [![Python](https://img.shields.io/badge/Python-3.8%2B-darkcyan)](https://pypi.org/project/irene-sankey/)
 [![PyPI - Version](https://img.shields.io/pypi/v/irene-sankey?label=PyPI%20Version&color=green)](https://pypi.org/project/irene-sankey/)
 [![PyPI Downloads](https://static.pepy.tech/badge/irene-sankey)](https://pepy.tech/projects/irene-sankey)
