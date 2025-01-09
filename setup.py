@@ -4,7 +4,7 @@ setup(
     name="irene-sankey",
     version="1.0.2",
     author="FOX Techniques",
-    author_email="info+irene@fox-techniques.com",
+    author_email="ali.nabbi@fox-techniques.com",
     description="A package for generating source-target pair and node map from pandas DataFrames for Sankey flow diagrams",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
