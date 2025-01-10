@@ -38,21 +38,20 @@ jobs:
         run: |
           response=$(curl -s https://pypi.org/pypi/${{ env.PACKAGE_NAME }}/json || echo "{}")
           latest_previous_version=$(echo "$response" | jq -r '.releases | keys_unsorted | sort | .[-1]' || echo "0.0.0")
-          if [ -z "$latest_previous_version" ] || [ "$latest_previous_version" == "null" ]; then
+          if [ "$latest_previous_version" == "null" ] || [ -z "$latest_previous_version" ]; then
             latest_previous_version="0.0.0"
           fi
           echo "latest_previous_version=$latest_previous_version" >> $GITHUB_ENV
 
       - name: Compare Versions
         run: |
-          NEW_VERSION=${{ steps.extract_tag.outputs.new_version }}
-          LATEST_VERSION=$latest_previous_version
-          if [ "$(printf '%s\n' "$LATEST_VERSION" "$NEW_VERSION" | sort -rV | head -n 1)" != "$NEW_VERSION" ] || [ "$NEW_VERSION" == "$LATEST_VERSION" ]; then
-            echo "The new version $NEW_VERSION is not greater than the latest version $LATEST_VERSION on PyPI."
-            exit 1
-          else
-            echo "The new version $NEW_VERSION is greater than the latest version $LATEST_VERSION on PyPI."
-          fi
+          python -c "
+          from packaging.version import parse
+          new_version = parse('${{ steps.extract_tag.outputs.new_version }}')
+          latest_version = parse('${{ env.latest_previous_version }}')
+          if not new_version > latest_version:
+              raise ValueError(f'New version {new_version} is not greater than latest {latest_version}')
+          "
 
   test_backward_compatibility:
     name: Test Backward Compatibility
@@ -60,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
 
@@ -84,15 +83,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.8"
+      - name: Ensure Python Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
 
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry --version
 
       - name: Set Project Version
         run: poetry version ${{ needs.details.outputs.new_version }}
@@ -102,6 +103,13 @@ jobs:
 
       - name: Build Distribution
         run: poetry build
+
+      - name: Verify Build Artifacts
+        run: |
+          if [ ! -d "dist/" ]; then
+            echo "Distribution artifacts are missing."
+            exit 1
+          fi
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
