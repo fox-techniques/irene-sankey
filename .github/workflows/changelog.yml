@@ -4,13 +4,11 @@ on:
   push:
     branches:
       - main
-
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"
-      
   pull_request:
     types:
       - closed
@@ -34,10 +32,30 @@ jobs:
       - name: Update Changelog
         run: git-changelog > CHANGELOG.md
 
-      - name: Commit Changes
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Create a new branch for changelog updates
+        run: |
+          git checkout -b update-changelog
           git add CHANGELOG.md
           git commit -m "Update Changelog [skip ci]" || echo "No changes to commit"
-          git push
+          git push origin update-changelog || echo "Branch already exists"
+
+      - name: Create a Pull Request
+        id: create_pull_request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-changelog
+          title: "Update Changelog"
+          body: "This pull request updates the changelog with the latest changes."
+
+      - name: Merge Pull Request
+        if: success()
+        run: |
+          gh pr merge ${{ steps.create_pull_request.outputs.pull-request-url }} --squash --admin --confirm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
