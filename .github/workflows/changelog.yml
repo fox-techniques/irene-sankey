@@ -2,9 +2,9 @@ name: Weekly Changelog Release
 
 on:
   workflow_dispatch:
- 
+
   schedule:
-    - cron: "0 12 * * 5" # Every Friday at noon (UTC)
+    - cron: "0 14 * * 5" # Every Friday at 14:00 UTC (15:00 CET/CEST)
 
 permissions:
   contents: write
@@ -26,14 +26,14 @@ jobs:
 
       - name: Generate Weekly Changelog
         run: |
-          # Get the start of the week (last Monday) and the end of the week (last Sunday)
-          START_DATE=$(date -d "last monday" +%Y-%m-%d)
-          END_DATE=$(date -d "last sunday" +%Y-%m-%d)
+          # Calculate the start (previous Friday) and end date (current Friday)
+          END_DATE=$(date -u +"%Y-%m-%d") # Current date (workflow run date, Friday)
+          START_DATE=$(date -u -d "$END_DATE - 7 days" +"%Y-%m-%d") # Previous Friday
           
           echo "# Changelog for ${START_DATE} to ${END_DATE}" > CHANGELOG.md
           echo "\n## Changes" >> CHANGELOG.md
           
-          # Log commits made during the week
+          # Log commits made during the week window
           git log --since="$START_DATE" --until="$END_DATE" --pretty=format:"- %s (%an)" >> CHANGELOG.md
 
           # Check if there are any changes
@@ -57,7 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Use the changelog as the release body
-          TAG="weekly-changelog-${START_DATE}"
+          TAG="weekly-changelog-${END_DATE}"
           RELEASE_TITLE="Weekly Changelog: ${START_DATE} to ${END_DATE}"
           BODY=$(cat CHANGELOG.md)
           
