@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Add Changelog Automation workflow to generate and update CHANGELOG.md ([79a0cc9](https://github.com/fox-techniques/irene-sankey/commit/79a0cc987fceeebe06f2f8db14fcaede8c4c9df8) by A Nova).
 - Address code scan findings - Update GitHub Actions workflow for PyPI publishing: add read permissions for contents and upgrade pypa/gh-action-pypi-publish to v1.7.0 ([fecc3e7](https://github.com/fox-techniques/irene-sankey/commit/fecc3e71fe8d587efdd3072d3e889c4321cb6fe9) by A Nova).
 
 <!-- insertion marker -->
