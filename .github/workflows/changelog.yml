@@ -18,8 +18,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch Existing 'update-changelog' Branch
+        run: |
+          git fetch origin update-changelog || echo "Branch does not exist yet."
+
+      - name: Create or Checkout 'update-changelog' Branch
+        run: |
+          if git rev-parse --verify origin/update-changelog; then
+            git checkout update-changelog
+            git pull origin update-changelog
+          else
+            git checkout -b update-changelog
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -32,30 +47,19 @@ jobs:
       - name: Update Changelog
         run: git-changelog > CHANGELOG.md
 
-      - name: Configure Git
+      - name: Commit Changelog Updates
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Create a new branch for changelog updates
-        run: |
-          git checkout -b update-changelog
           git add CHANGELOG.md
           git commit -m "Update Changelog [skip ci]" || echo "No changes to commit"
-          git push origin update-changelog || echo "Branch already exists"
+          git push origin update-changelog
 
-      - name: Create a Pull Request
+      - name: Create or Update Pull Request
         id: create_pull_request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-changelog
           title: "Update Changelog"
-          body: "This pull request updates the changelog with the latest changes."
-
-      - name: Merge Pull Request
-        if: success()
-        run: |
-          gh pr merge ${{ steps.create_pull_request.outputs.pull-request-url }} --squash --admin --confirm
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            This pull request updates the changelog with the latest changes.
+            Previous history has been preserved in the `update-changelog` branch.
