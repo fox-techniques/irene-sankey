@@ -1,20 +1,16 @@
-name: Changelog Automation
+name: Weekly Changelog Release
 
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
-      - "v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+"
-      - "v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+"
-      - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"
-  pull_request:
-    types:
-      - closed
+  workflow_dispatch:
+ 
+  schedule:
+    - cron: "0 12 * * 5" # Every Friday at noon (UTC)
+
+permissions:
+  contents: write
 
 jobs:
-  update-changelog:
+  generate-and-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,44 +19,51 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch Existing 'update-changelog' Branch
-        run: |
-          git fetch origin update-changelog || echo "Branch does not exist yet."
-
-      - name: Create or Update 'update-changelog' Branch
-        run: |
-          if git rev-parse --verify origin/update-changelog; then
-            git checkout update-changelog
-            git merge origin/main --no-edit || echo "Already up to date"
-          else
-            git checkout -b update-changelog origin/main
-          fi
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
 
-      - name: Install git-changelog
-        run: pip install git-changelog
-
-      - name: Update Changelog
-        run: git-changelog > CHANGELOG.md
-
-      - name: Commit Changelog Updates
+      - name: Generate Weekly Changelog
         run: |
-          git add CHANGELOG.md
-          git commit -m "Update Changelog [skip ci]" || echo "No changes to commit"
-          git push origin update-changelog
+          # Get the start of the week (last Monday) and the end of the week (last Sunday)
+          START_DATE=$(date -d "last monday" +%Y-%m-%d)
+          END_DATE=$(date -d "last sunday" +%Y-%m-%d)
+          
+          echo "# Changelog for ${START_DATE} to ${END_DATE}" > CHANGELOG.md
+          echo "\n## Changes" >> CHANGELOG.md
+          
+          # Log commits made during the week
+          git log --since="$START_DATE" --until="$END_DATE" --pretty=format:"- %s (%an)" >> CHANGELOG.md
 
-      - name: Create or Update Pull Request
-        id: create_pull_request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update-changelog
-          base: main
-          title: "Update Changelog"
-          body: |
-            This pull request updates the changelog with the latest changes.
-            Previous history has been preserved in the `update-changelog` branch.
+          # Check if there are any changes
+          if grep -q "-" CHANGELOG.md; then
+            echo "Changes found. Preparing release."
+          else
+            echo "No changes this week. Skipping release."
+            exit 0
+          fi
+
+      - name: Commit Changelog
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "Weekly Changelog: ${START_DATE} to ${END_DATE} [skip ci]" || echo "No changes to commit"
+          git push origin HEAD
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Use the changelog as the release body
+          TAG="weekly-changelog-${START_DATE}"
+          RELEASE_TITLE="Weekly Changelog: ${START_DATE} to ${END_DATE}"
+          BODY=$(cat CHANGELOG.md)
+          
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg tag $TAG --arg title "$RELEASE_TITLE" --arg body "$BODY" \
+              '{ tag_name: $tag, name: $title, body: $body, draft: false, prerelease: false }')" \
+            https://api.github.com/repos/${{ github.repository }}/releases
