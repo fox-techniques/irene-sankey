@@ -28,14 +28,13 @@ jobs:
 
       - name: Generate Weekly Changelog
         run: |
-          # Calculate the start (previous Friday) and end date (current Friday)
           END_DATE=$(date -u +"%Y-%m-%d") # Current date (Friday)
           START_DATE=$(date -u -d "$END_DATE - 7 days" +"%Y-%m-%d") # Previous Friday
 
           echo "Generating changelog from $START_DATE to $END_DATE"
 
           # Generate changelog for the past week
-          git-changelog --since "$START_DATE" --until "$END_DATE" --output CHANGELOG.md
+          git-changelog --from "$START_DATE" --to "$END_DATE" --output CHANGELOG.md
 
           # Check if there are actual changes
           if grep -q "-" CHANGELOG.md; then
@@ -43,7 +42,6 @@ jobs:
           else
             echo "No changes this week. Skipping release."
             exit 0
-          fi
 
       - name: Commit and Push Changelog
         env:
