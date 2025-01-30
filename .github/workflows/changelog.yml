@@ -2,7 +2,6 @@ name: Weekly Changelog Release
 
 on:
   workflow_dispatch:
-
   schedule:
     - cron: "0 14 * * 5" # Every Friday at 14:00 UTC (15:00 CET/CEST)
 
@@ -17,12 +16,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Fetch full history for git-changelog
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
+
+      - name: Install git-changelog
+        run: |
+          pip install git-changelog
 
       - name: Generate Weekly Changelog
         run: |
@@ -30,13 +33,10 @@ jobs:
           END_DATE=$(date -u +"%Y-%m-%d") # Current date (workflow run date, Friday)
           START_DATE=$(date -u -d "$END_DATE - 7 days" +"%Y-%m-%d") # Previous Friday
           
-          echo "# Changelog for ${START_DATE} to ${END_DATE}" > CHANGELOG.md
-          echo "\n## Changes" >> CHANGELOG.md
-          
-          # Log commits made during the week window
-          git log --since="$START_DATE" --until="$END_DATE" --pretty=format:"- %s (%an)" >> CHANGELOG.md
+          # Generate changelog from commits in the last 7 days
+          git-changelog --from "$START_DATE" --to "$END_DATE" --output CHANGELOG.md
 
-          # Check if there are any changes
+          # Check if the changelog contains actual changes
           if grep -q "-" CHANGELOG.md; then
             echo "Changes found. Preparing release."
           else
@@ -44,13 +44,26 @@ jobs:
             exit 0
           fi
 
-      - name: Commit Changelog
+      - name: Commit and Push Changelog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
           git add CHANGELOG.md
-          git commit -m "Weekly Changelog: ${START_DATE} to ${END_DATE} [skip ci]" || echo "No changes to commit"
-          git push origin HEAD
+          
+          # Check if there are any staged changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit. Skipping push."
+            exit 0
+          fi
+          
+          git commit -m "Weekly Changelog: ${START_DATE} to ${END_DATE} [skip ci]"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
+
+      - name: Install jq
+        run: sudo apt-get install jq -y
 
       - name: Create GitHub Release
         env:
@@ -64,6 +77,6 @@ jobs:
           curl -X POST \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
-            -d "$(jq -n --arg tag $TAG --arg title "$RELEASE_TITLE" --arg body "$BODY" \
+            -d "$(jq -n --arg tag "$TAG" --arg title "$RELEASE_TITLE" --arg body "$BODY" \
               '{ tag_name: $tag, name: $title, body: $body, draft: false, prerelease: false }')" \
             https://api.github.com/repos/${{ github.repository }}/releases

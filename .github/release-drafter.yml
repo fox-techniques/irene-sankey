@@ -1,0 +1,39 @@
+name-template: "v$NEXT_PATCH_VERSION"
+tag-template: "v$NEXT_PATCH_VERSION"
+
+categories:
+  - title: "🚀 Features"
+    labels:
+      - "feature"
+      - "enhancement"
+
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "bug"
+      - "fix"
+
+  - title: "📝 Documentation"
+    labels:
+      - "docs"
+      - "documentation"
+
+  - title: "🛠️ Maintenance & Refactors"
+    labels:
+      - "chore"
+      - "refactor"
+      - "dependencies"
+
+change-template: "- $TITLE by @$AUTHOR"
+
+template: |
+  ## 🚀 Release: $RELEASE_TITLE ($TAG_NAME)
+  
+  **📅 Date:** $(date +"%Y-%m-%d")
+
+  ## 🆕 What's New
+  $CHANGES
+
+  ## 📦 Installation
+  To install the latest release, run:
+  ```sh
+  pip install your-package-name --upgrade
