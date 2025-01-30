@@ -1,9 +1,9 @@
 name: Weekly Changelog Release
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Allows manual execution
   schedule:
-    - cron: "0 14 * * 5" # Every Friday at 14:00 UTC (15:00 CET/CEST)
+    - cron: "0 14 * * 5"  # Runs every Friday at 14:00 UTC (15:00 CET/CEST)
 
 permissions:
   contents: write
@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch full history for git-changelog
+          fetch-depth: 0  # Fetch full history for accurate changelog
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -24,21 +24,22 @@ jobs:
           python-version: "3.9"
 
       - name: Install git-changelog
-        run: |
-          pip install git-changelog
+        run: pip install git-changelog
 
       - name: Generate Weekly Changelog
         run: |
           # Calculate the start (previous Friday) and end date (current Friday)
-          END_DATE=$(date -u +"%Y-%m-%d") # Current date (workflow run date, Friday)
+          END_DATE=$(date -u +"%Y-%m-%d") # Current date (Friday)
           START_DATE=$(date -u -d "$END_DATE - 7 days" +"%Y-%m-%d") # Previous Friday
-          
-          # Generate changelog from commits in the last 7 days
-          git-changelog --from "$START_DATE" --to "$END_DATE" --output CHANGELOG.md
 
-          # Check if the changelog contains actual changes
+          echo "Generating changelog from $START_DATE to $END_DATE"
+
+          # Generate changelog for the past week
+          git-changelog --since "$START_DATE" --until "$END_DATE" --output CHANGELOG.md
+
+          # Check if there are actual changes
           if grep -q "-" CHANGELOG.md; then
-            echo "Changes found. Preparing release."
+            echo "Changelog generated successfully."
           else
             echo "No changes this week. Skipping release."
             exit 0
@@ -53,7 +54,7 @@ jobs:
           
           git add CHANGELOG.md
           
-          # Check if there are any staged changes
+          # Check if there are changes to commit
           if git diff --cached --quiet; then
             echo "No changes to commit. Skipping push."
             exit 0
@@ -65,11 +66,11 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq -y
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release (Draft)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Use the changelog as the release body
+          # Create a tag and release title
           TAG="weekly-changelog-${END_DATE}"
           RELEASE_TITLE="Weekly Changelog: ${START_DATE} to ${END_DATE}"
           BODY=$(cat CHANGELOG.md)
@@ -78,5 +79,5 @@ jobs:
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$(jq -n --arg tag "$TAG" --arg title "$RELEASE_TITLE" --arg body "$BODY" \
-              '{ tag_name: $tag, name: $title, body: $body, draft: false, prerelease: false }')" \
+              '{ tag_name: $tag, name: $title, body: $body, draft: true, prerelease: false }')" \
             https://api.github.com/repos/${{ github.repository }}/releases
