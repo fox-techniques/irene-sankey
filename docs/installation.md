@@ -1,10 +1,9 @@
-# Installation 
+# 📥 Installation 
 
-## with pip <small>recommended</small> { #with-pip data-toc-label="with pip" }
+## 📦 pip 
 
-Irene-Sankey is published as a python package and can be installed with
-`pip`, ideally by using a [virtual environment]. Open up a terminal and install
-Irene-Sankey with:
+IRENE-Sankey is published as a python package and can be installed with
+`pip`, ideally by using a [virtual environment]. Open up a terminal and install with:
 
 === "Latest"
 
@@ -18,7 +17,7 @@ Irene-Sankey with:
     pip install irene-sankey=="1.*" # (1)!
     ```
 
-    1.  Irene-Sankey uses [semantic versioning].
+    1.  IRENE-Sankey uses [semantic versioning].
 
         This will make sure that you don't accidentally [upgrade to the next
         major version], which may include breaking changes that silently corrupt
@@ -36,7 +35,7 @@ Irene-Sankey with:
         ```
 
 This will automatically install compatible versions of all dependencies:
-[numpy], [pandas], [plotly], and [requests]. Irene-Sankey always strives to support the latest versions, so there's no need to
+[numpy], [pandas], [plotly], and [requests]. IRENE-Sankey always strives to support the latest versions, so there's no need to
 install those packages separately.
 
 ---
@@ -54,9 +53,9 @@ install those packages separately.
   [Using Python's pip to Manage Your Projects' Dependencies]: https://realpython.com/what-is-pip/
 
 
-## with git
+## 🐙 GitHub
 
-Irene-Sankey can be directly used from [GitHub] by cloning the
+IRENE-Sankey can be directly used from [GitHub] by cloning the
 repository into a subfolder of your project root which might be useful if you
 want to use the very latest version:
 
@@ -70,14 +69,14 @@ Next, install the theme and its dependencies with:
 pip install -e irene-sankey
 ```
 
-## with poetry
+## 🎭 Poetry
 
 Prerequisites:
 
 - Python 3.8 or higher
 - [Poetry]
 
-Installing Irene-Sankey:
+Installing IRENE-Sankey:
 
 ```bash
 poetry add irene-sankey
@@ -105,7 +104,7 @@ Updating the Package:
 poetry update irene-sankey
 ```
 
-  [Irene-Sankey]: https://pypi.org/project/irene-sankey/
+  [IRENE-Sankey]: https://pypi.org/project/irene-sankey/
   [GitHub]: https://github.com/fox-techniques/irene-sankey
   [numpy]: https://pypi.org/project/numpy/
   [pandas]: https://pypi.org/project/pandas/

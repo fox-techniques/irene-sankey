@@ -1,11 +1,11 @@
-# Demo 
+# 🎥 Demo 
 
-## Irene-Sankey Demo
+## 🎬 IRENE-Sankey Demo
 
 The output of the `plot_irene_sankey_diagram` and `traverse_sankey_flow` function provides three structured components that represent the flow of data for generating a Sankey diagram. Here’s what each component looks like:
 
 
-=== "Sankey Plot"
+=== "IRENE-Sankey Plot"
 
     ![Demo plot](assets/plot-demo.png){ width=800 }
 
@@ -126,9 +126,9 @@ The output of the `plot_irene_sankey_diagram` and `traverse_sankey_flow` functio
 
     ```
 
-## How to Use
+## 🚀 How to Use
 
-Once the Irene-Sankey package is installed, you can use it in your projects. Here’s the code of the demo: 
+Once the IRENE-Sankey package is installed, you can use it in your projects. Here’s the code of the demo: 
 
 ```py title="irene_sankey_demo.py" linenums="1"
 import pandas as pd
@@ -168,9 +168,9 @@ fig.show()
     You can use `node_map` and `link` with your own Plotly’s Sankey diagram functions.
 
 
-Thank you for exploring our demo! We hope this example has given you a clear understanding of how to utilize our package and integrate its features into your projects. Whether you're just getting started or diving deeper, our goal is to make your experience as seamless and productive as possible.
+Thank you for exploring our demo!🙌 We hope this example has given you a clear understanding of how to utilize our package and integrate its features into your projects. Whether you're just getting started or diving deeper, our goal is to make your experience as seamless and productive as possible. ✌️
 
-Happy coding!
+Happy coding! 💻💡
 
-  [Irene-Sankey]: https://pypi.org/project/irene-sankey/
+  [IRENE-Sankey]: https://pypi.org/project/irene-sankey/
   [virtual environment]: https://realpython.com/what-is-pip/#using-pip-in-a-python-virtual-environment

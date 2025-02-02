@@ -1,8 +1,8 @@
 ---
-title: Irene-Sankey Python Package
+title: IRENE-Sankey
 ---
 
-# Irene-Sankey
+# IRENE-Sankey
 
 ![Irene Flyer](assets/irene-flyer.png){ width=200 }
 
@@ -13,21 +13,21 @@ title: Irene-Sankey Python Package
 [![GitHub](https://img.shields.io/badge/GitHub-irene--sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
 
 
-Irene-Sankey is a python package that enables the creation of customizable and informative Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
+**IRENE-Sankey** is a python package that enables the creation of customizable and informative Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
 
 
-## Key Features
+## 🌟 Key Features
 
-- **Simple Sankey Diagrams**: Easily create source-target pair and customize Sankey diagrams from pandas DataFrames.
-- **Customizable Styles**: Customize colors, labels, node spacing, and flow thickness to suit your needs.
-- **Support for Large Diagrams**: Efficiently handles larger flows and multiple nodes.
-- **Integrates with Pandas**: Easily map columns and rows from pandas DataFrames to nodes and links.
+- 🎋 **Simple Sankey Diagrams**: Easily create source-target pair and customize Sankey diagrams from pandas DataFrames.
+- 🎨 **Customizable Styles**: Customize colors, labels, node spacing, and flow thickness to suit your needs.
+- 📈**Support for Large Diagrams**: Efficiently handles larger flows and multiple nodes.
+- 🧮 **Integrates with Pandas**: Easily map columns and rows from pandas DataFrames to nodes and links.
 ---
 
-## Quick Links
+## 🔗 Quick Links
 
 - [PyPI](https://pypi.org/project/irene-sankey)
 - [GitHub Repository](https://github.com/fox-techniques/irene-sankey)
 - [License](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
 
-Explore the documentation to learn how to customize and make the most of **Irene-Sankey** for your project!
+Explore the documentation to learn how to customize and make the most of **IRENE-Sankey** for your project!

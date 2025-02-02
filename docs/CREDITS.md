@@ -1,4 +1,4 @@
-# Credits
+# 💐 Credits
 
 Special thanks to:
 

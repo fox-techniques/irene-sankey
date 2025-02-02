@@ -1,4 +1,4 @@
-# Irene-Sankey  
+# IRENE-Sankey  
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-darkcyan)](https://pypi.org/project/irene-sankey/)
 [![PyPI - Version](https://img.shields.io/pypi/v/irene-sankey?label=PyPI%20Version&color=green)](https://pypi.org/project/irene-sankey/)
@@ -6,11 +6,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/fox-techniques/irene-sankey/blob/main/LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-irene--sankey-181717?logo=github)](https://github.com/fox-techniques/irene-sankey)
 
- Irene-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
+ IRENE-Sankey is a Python library that enables the creation of customizable and informative source-target pair to create Sankey diagrams. It is designed to be intuitive for both beginners and experts, with flexible options for styling, data input, and configuration, making it easy to represent complex flows visually.
 
 ## Table of Contents
 
-- [Irene-Sankey](#irene-sankey)
+- [IRENE-Sankey](#irene-sankey)
   - [Table of Contents](#table-of-contents)
   - [Documentation](#documentation)
   - [Overview](#overview)
@@ -28,7 +28,7 @@ The full documentation is available on **[GitHub Pages](https://fox-techniques.g
 
 ## Overview
 
-**Irene-Sankey** offers an easy-to-use interface for creating Sankey diagrams, which are ideal for visualizing flow distributions across different categories or entities. The package is built to work seamlessly with pandas data structures and provides a range of customization options for colors, labels, and node arrangements, making it perfect for data analysts, data scientists, and anyone interested in visualizing complex flows.
+**IRENE-Sankey** offers an easy-to-use interface for creating Sankey diagrams, which are ideal for visualizing flow distributions across different categories or entities. The package is built to work seamlessly with pandas data structures and provides a range of customization options for colors, labels, and node arrangements, making it perfect for data analysts, data scientists, and anyone interested in visualizing complex flows.
 
 
 ## Features
@@ -41,7 +41,7 @@ The full documentation is available on **[GitHub Pages](https://fox-techniques.g
 
 ## Installation
 
-Install **Irene-Sankey** using pip:
+Install **IRENE-Sankey** using pip:
 
 ```bash
 pip install irene-sankey
@@ -52,7 +52,7 @@ pip install irene-sankey
 
 ## Quick Start
 
-Here’s a quick example to create a simple Sankey diagram with **Irene-Sankey**.
+Here’s a quick example to create a simple Sankey diagram with **IRENE-Sankey**.
 
 ```python
 import pandas as pd
@@ -90,7 +90,7 @@ fig.show()
 
 ## Usage
 
-The core function in the **Irene-Sankey** package is `traverse_sankey_flow`. By passing a pandas DataFrame and selecting string columns in the order of the flow, you can quickly generate a required source-target pair map to generate Sankey diagram.
+The core function in the **IRENE-Sankey** package is `traverse_sankey_flow`. By passing a pandas DataFrame and selecting string columns in the order of the flow, you can quickly generate a required source-target pair map to generate Sankey diagram.
 
 
 ## Contribution

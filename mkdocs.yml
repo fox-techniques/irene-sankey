@@ -1,4 +1,4 @@
-site_name: Irene-Sankey Python Package
+site_name: IRENE-Sankey
 theme: 
   features:
     - navigation.footer
@@ -42,7 +42,7 @@ nav:
 extra:
   social:
     - icon: fontawesome/solid/envelope
-      link: mailto:contact@fox-techniques.com?subject=Inquiry%20about%20Irene-Sankey
+      link: mailto:contact@fox-techniques.com?subject=Inquiry%20about%20IRENE-Sankey
     - icon: fontawesome/brands/github
       link: https://github.com/fox-techniques/irene-sankey
     - icon: fontawesome/brands/discord
