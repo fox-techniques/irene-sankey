@@ -1,0 +1,14 @@
+# CODEOWNERS for Public Repositories
+# Ensures that @fox-techniques reviews all critical changes
+
+# Global rule: All PRs must be reviewed by @fox-techniques
+* @fox-techniques
+
+# Enforce review for all repository-wide changes
+** @fox-techniques
+
+# Require review for direct pushes to main
+/main @fox-techniques
+
+# Require review for tag creation
+/refs/tags/* @fox-techniques
