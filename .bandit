@@ -1,3 +1,0 @@
-[bandit]
-skip = B101
-exclude_dirs = tests/
