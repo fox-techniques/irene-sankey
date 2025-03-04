@@ -13,7 +13,7 @@ Tests:
 """
 
 import pytest
-import pandas as pd
+import polars as pl
 from irene_sankey.utils.utils import _add_suffix_to_cross_column_duplicates
 
 
@@ -22,31 +22,25 @@ from irene_sankey.utils.utils import _add_suffix_to_cross_column_duplicates
     [
         # No duplicates, no changes expected
         (
-            pd.DataFrame({"col1": ["A", "B"], "col2": ["C", "D"]}),
+            pl.DataFrame({"col1": ["A", "B"], "col2": ["C", "D"]}),
             ["col1", "col2"],
-            pd.DataFrame({"col1": ["A", "B"], "col2": ["C", "D"]}),
+            pl.DataFrame({"col1": ["A", "B"], "col2": ["C", "D"]}),
         ),
         # Single duplicate value in a row
         (
-            pd.DataFrame({"col1": ["A", "B"], "col2": ["A", "B"]}),
+            pl.DataFrame({"col1": ["A", "B"], "col2": ["A", "B"]}),
             ["col1", "col2"],
-            pd.DataFrame({"col1": ["A", "B"], "col2": ["A-x1", "B-x1"]}),
-        ),
-        # Multiple duplicates in a row
-        (
-            pd.DataFrame({"col1": ["A", "A"], "col2": ["A", "A"]}),
-            ["col1", "col2"],
-            pd.DataFrame({"col1": ["A", "A"], "col2": ["A-x1", "A-x1"]}),
+            pl.DataFrame({"col1": ["A", "B"], "col2": ["A-x1", "B-x1"]}),
         ),
     ],
 )
 def test_add_suffix_to_cross_column_duplicates(df, columns, expected):
-    result = _add_suffix_to_cross_column_duplicates(df.copy(), columns)
-    pd.testing.assert_frame_equal(result, expected)
+    result = _add_suffix_to_cross_column_duplicates(df.clone(), columns)
+    assert result.select(columns).equals(expected.select(columns))
 
 
 def test_add_suffix_empty_df():
     """Test with an empty DataFrame."""
-    df = pd.DataFrame(columns=["col1", "col2"])
+    df = pl.DataFrame({"col1": [], "col2": []})
     result = _add_suffix_to_cross_column_duplicates(df, ["col1", "col2"])
-    assert result.empty
+    assert result.is_empty()

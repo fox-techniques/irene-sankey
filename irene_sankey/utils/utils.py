@@ -9,52 +9,59 @@ Note:
     This module is intended for internal use, and functions here are not part of the public API.
 """
 
-from ..utils.performance import _log_execution_time
-
-from typing import List
+import polars as pl
 import logging
-import pandas as pd
+from typing import List
 
 logger = logging.getLogger(__name__)
 
 
-@_log_execution_time
 def _add_suffix_to_cross_column_duplicates(
-    df: pd.DataFrame, columns: List[str], suffix: str = "-x"
-) -> pd.DataFrame:
+    df: pl.DataFrame, columns: List[str], suffix: str = "-x"
+) -> pl.DataFrame:
     """
-    Adds suffixes to duplicate values in specified columns within each row of a DataFrame.
-
-    This function identifies duplicate values across multiple columns within each row of
-    the DataFrame and appends a suffix to the second and subsequent occurrences.
+    Adds suffixes to duplicate values in specified columns within each row of a Polars DataFrame.
 
     Args:
-        df (pd.DataFrame): The input DataFrame.
+        df (pl.DataFrame): The input DataFrame.
         columns (List[str]): List of column names to check for cross-column duplicates.
         suffix (str, optional): Suffix to append to duplicate values in each row. Default is "-x".
 
     Returns:
-        pd.DataFrame: Modified DataFrame with suffixes added to duplicates in rows.
+        pl.DataFrame: Modified DataFrame with suffixes added to duplicates in rows.
     """
     logger.info(f"Starting suffix addition for columns: {columns}")
+    df = df.clone()
 
-    # Make a copy of the DataFrame to avoid side effects
-    df = df.copy()
+    # Handle empty DataFrame case
+    if df.is_empty():
+        return df
 
     try:
-        for idx, row in df.iterrows():
+
+        def process_row(row: tuple) -> tuple:
             seen = {}
-            for col in columns:
-                value = row[col]
+            updated_row = list(row)  # Convert tuple to list for modification
+            for idx, value in enumerate(row):
+                col_name = columns[idx]
                 if value not in seen:
                     seen[value] = 1
                 else:
                     seen[value] += 1
-                    new_value = f"{value}{suffix}{seen[value] - 1}"
-                    df.at[idx, col] = new_value
-                    logger.debug(
-                        f"Modified duplicate value in row {str(idx)}, column '{col}': {new_value}"
-                    )
+                    updated_row[idx] = f"{value}{suffix}{seen[value] - 1}"
+            return tuple(updated_row)  # Convert back to tuple
+
+        # Apply row-wise transformation using map_rows
+        updated_rows = df.select(columns).map_rows(process_row)
+
+        # Convert back into DataFrame with original column names
+        updated_df = pl.DataFrame(
+            {col: updated_rows[:, i] for i, col in enumerate(columns)}
+        )
+
+        # Merge updated columns back into the original DataFrame
+        df = df.drop(columns).with_columns(updated_df)
+
     except Exception as e:
         logger.error(f"Error adding suffix to duplicates: {str(e)}")
         raise

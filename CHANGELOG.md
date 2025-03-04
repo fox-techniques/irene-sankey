@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+    
 ## Unreleased
 
 <small>[Compare with latest](https://github.com/fox-techniques/irene-sankey/compare/v1.1.4...HEAD)</small>
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Remove weekly changelog workflow from GitHub Actions ([2fbe88c](https://github.com/fox-techniques/irene-sankey/commit/2fbe88c704fd152d1d1482f866e0f396999d5c95) by A Nova).
 
 <!-- insertion marker -->
+    
 ## [v1.1.4](https://github.com/fox-techniques/irene-sankey/releases/tag/v1.1.4) - 2025-01-10
 
 <small>[Compare with v1.1.3](https://github.com/fox-techniques/irene-sankey/compare/v1.1.3...v1.1.4)</small>

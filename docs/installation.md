@@ -14,7 +14,7 @@ IRENE-Sankey is published as a python package and can be installed with
 === "1.x"
 
     ``` sh
-    pip install irene-sankey=="1.*" # (1)!
+    pip install irene-sankey=="2.*" # (1)!
     ```
 
     1.  IRENE-Sankey uses [semantic versioning].
@@ -35,7 +35,7 @@ IRENE-Sankey is published as a python package and can be installed with
         ```
 
 This will automatically install compatible versions of all dependencies:
-[numpy], [pandas], [plotly], and [requests]. IRENE-Sankey always strives to support the latest versions, so there's no need to
+[polars], [pandas], [numpy], [plotly], and [requests]. IRENE-Sankey always strives to support the latest versions, so there's no need to
 install those packages separately.
 
 ---
@@ -107,6 +107,7 @@ poetry update irene-sankey
   [IRENE-Sankey]: https://pypi.org/project/irene-sankey/
   [GitHub]: https://github.com/fox-techniques/irene-sankey
   [numpy]: https://pypi.org/project/numpy/
+  [polars]: https://pypi.org/project/polars/
   [pandas]: https://pypi.org/project/pandas/
   [plotly]: https://pypi.org/project/plotly/
   [requests]: https://pypi.org/project/requests/

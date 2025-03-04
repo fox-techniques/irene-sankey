@@ -13,13 +13,13 @@ Tests:
 """
 
 import pytest
-import pandas as pd
+import polars as pl
 from irene_sankey.core.traverse import traverse_sankey_flow
 
 
 @pytest.fixture
 def sample_df():
-    return pd.DataFrame(
+    return pl.DataFrame(
         {
             "Stage1": ["A", "B", "A", "C"],
             "Stage2": ["B", "C", "B", "D"],
@@ -42,8 +42,9 @@ def test_traverse_sankey_chain(sample_df):
     assert set(link.keys()) == {"source", "target", "value"}
 
 
-def test_traverse_with_head_node(sample_df, head_node_label="TestRoot"):
+def test_traverse_with_head_node(sample_df):
     """Test that head node label is correctly applied."""
+    head_node_label = "TestRoot"
     flow_df, node_map, link = traverse_sankey_flow(
         sample_df, ["", "Stage1", "Stage2", "Stage3"], head_node_label
     )
@@ -54,15 +55,15 @@ def test_traverse_with_head_node(sample_df, head_node_label="TestRoot"):
 
 def test_traverse_empty_df():
     """Test with an empty DataFrame."""
-    df = pd.DataFrame(columns=["Stage1", "Stage2", "Stage3"])
+    df = pl.DataFrame({"Stage1": [], "Stage2": [], "Stage3": []})
     flow_df, node_map, link = traverse_sankey_flow(df, ["Stage1", "Stage2", "Stage3"])
-    assert flow_df.empty
+    assert flow_df.is_empty()
     assert node_map == {}
     assert link == {"source": [], "target": [], "value": []}
 
 
 def test_traverse_invalid_input():
     """Test with invalid input, such as missing columns."""
-    df = pd.DataFrame({"col1": ["A", "B"], "col2": ["C", "D"]})
-    with pytest.raises(KeyError):
+    df = pl.DataFrame({"col1": ["A", "B"], "col2": ["C", "D"]})
+    with pytest.raises(pl.ColumnNotFoundError):
         traverse_sankey_flow(df, ["Stage1", "Stage2"])

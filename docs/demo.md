@@ -131,12 +131,12 @@ The output of the `plot_irene_sankey_diagram` and `traverse_sankey_flow` functio
 Once the IRENE-Sankey package is installed, you can use it in your projects. Here’s the code of the demo: 
 
 ```py title="irene_sankey_demo.py" linenums="1"
-import pandas as pd
+import polars as pl
 from irene_sankey.core.traverse import traverse_sankey_flow
 from irene_sankey.plots.sankey import plot_irene_sankey_diagram
 
 # Sample data to test the functionality
-input_df = pd.DataFrame(
+input_df = pl.DataFrame(
     {
         "country": ["NL","NL","NL","DE","DE","FR","FR","FR","US","US","US"],
         "industry": [
@@ -156,7 +156,7 @@ input_df = pd.DataFrame(
 flow_df, node_map, link = traverse_sankey_flow(input_df, ["", "country", "industry", "field"])
 
 # Plot Sankey diagram 
-fig = plot_irene_sankey_diagram(node_map, link, title = "Irene-Sankey Demo", node_config={
+fig = plot_irene_sankey_diagram(node_map, link, title = "IRENE-Sankey Demo", node_config={
         "pad": 10,
         "line": dict(color="black", width=1),
     }

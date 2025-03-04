@@ -28,15 +28,15 @@ The full documentation is available on **[GitHub Pages](https://fox-techniques.g
 
 ## Overview
 
-**IRENE-Sankey** offers an easy-to-use interface for creating Sankey diagrams, which are ideal for visualizing flow distributions across different categories or entities. The package is built to work seamlessly with pandas data structures and provides a range of customization options for colors, labels, and node arrangements, making it perfect for data analysts, data scientists, and anyone interested in visualizing complex flows.
+**IRENE-Sankey** offers an easy-to-use interface for creating Sankey diagrams, which are ideal for visualizing flow distributions across different categories or entities. The package is built to work seamlessly with modern [Polars](https://pola.rs/) or Pandas dataframes and provides a range of customization options for colors, labels, and node arrangements, making it perfect for data analysts, data scientists, and anyone interested in visualizing complex flows.
 
 
 ## Features
 
-- **Simple Sankey Diagrams**: Easily create source-target pair and customize Sankey diagrams from pandas DataFrames.
+- **Simple Sankey Diagrams**: Easily create source-target pair and customize Sankey diagrams from Polars or Pandas DataFrames.
 - **Customizable Styles**: Customize colors, labels, node spacing, and flow thickness to suit your needs.
 - **Support for Large Diagrams**: Efficiently handles larger flows and multiple nodes.
-- **Integrates with Pandas**: Easily map columns and rows from pandas DataFrames to nodes and links.
+- **Integrates with Polars and Pandas**: Easily map columns and rows from Polars or Pandas DataFrames to nodes and links.
 
 
 ## Installation
@@ -47,7 +47,7 @@ Install **IRENE-Sankey** using pip:
 pip install irene-sankey
 ```
 
-> **Note**: Requires Python 3.8 or above.
+> **Note**: Requires Python 3.10 or above.
 
 
 ## Quick Start
@@ -55,12 +55,13 @@ pip install irene-sankey
 Here’s a quick example to create a simple Sankey diagram with **IRENE-Sankey**.
 
 ```python
-import pandas as pd
+import polars as pl
+
 from irene_sankey.core.traverse import traverse_sankey_flow
 from irene_sankey.plots.sankey import plot_irene_sankey_diagram
 
 # Sample data to test the functionality
-df = pd.DataFrame(
+df = pl.DataFrame(
     {
         "country": ["NL","NL","NL","DE","DE","FR","FR","FR","US","US","US"],
         "industry": [
@@ -90,7 +91,7 @@ fig.show()
 
 ## Usage
 
-The core function in the **IRENE-Sankey** package is `traverse_sankey_flow`. By passing a pandas DataFrame and selecting string columns in the order of the flow, you can quickly generate a required source-target pair map to generate Sankey diagram.
+The core function in the **IRENE-Sankey** package is `traverse_sankey_flow`. By passing a Polars or Pandas DataFrame and selecting string columns in the order of the flow, you can quickly generate a required source-target pair map to generate Sankey diagram.
 
 
 ## Contribution

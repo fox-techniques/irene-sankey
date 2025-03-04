@@ -2,7 +2,7 @@
 package-mode = true
 name = "irene-sankey"
 version = "1.1.2"
-description = "A package for generating source-target pair and node map from pandas DataFrames for Sankey flow diagrams"
+description = "A package for generating source-target pair and node map from polars and pandas DataFrames for Sankey flow diagrams"
 authors = ["FOX Techniques <ali.nabbi@fox-techniques.com>"]
 homepage = "https://github.com/fox-techniques/irene-sankey"
 license = "MIT"
@@ -10,7 +10,7 @@ readme = "README.md"
 packages = [{include = "irene_sankey"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 requests = "^2.32.3"
 plotly = "^5.24.1"
 pandas = [
@@ -22,6 +22,7 @@ numpy = [
     {version = ">=1.24", markers = "python_version >= '3.10'"}
 ]
 mkdocs-material = "^9.5.43"
+polars = "^1.24.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.3.3"

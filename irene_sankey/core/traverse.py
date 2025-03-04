@@ -15,96 +15,81 @@ Example usage:
     )
 """
 
+import polars as pl
 import pandas as pd
-
-from ..utils.utils import _add_suffix_to_cross_column_duplicates
-from ..utils.performance import _log_execution_time
-
-from typing import List, Dict, Tuple
-
+from typing import List, Dict, Tuple, Union
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-@_log_execution_time
 def traverse_sankey_flow(
-    df: pd.DataFrame,
+    df: Union[pl.DataFrame, pd.DataFrame],
     columns_in_flow: List[str],
     head_node_label: str = "Root",
-) -> Tuple[pd.DataFrame, Dict[str, int], Dict[str, List[int]]]:
+) -> Tuple[pl.DataFrame, Dict[str, int], Dict[str, List[int]]]:
     """
     Generates a data structure for a Sankey diagram from a DataFrame by chaining columns in the flow.
 
-    This function creates a flow data structure based on sequential flow of columns
-    from a DataFrame. Each flow step in specified columns is linked in sequence,
-    allowing the creation of a Sankey diagram to visualize the flow.
+    Polars is used as the default processing engine. If a Pandas DataFrame is provided, it is converted to Polars first.
 
     Args:
-        df (pd.DataFrame): Input DataFrame with data to chain into a Sankey structure.
+        df (pl.DataFrame or pd.DataFrame): Input DataFrame with data to chain into a Sankey structure.
         columns_in_flow (List[str]): List of column names to chain sequentially in the Sankey flow.
-            An empty string or period in the first position represents the head node.
-        head_node_label (str, optional): Label for the root or starting node,
-            default is "Root".
+        head_node_label (str, optional): Label for the root or starting node. Default is "Root".
 
     Returns:
-        Tuple[pd.DataFrame, Dict[str, int], Dict[str, List[int]]]:
-            - `flow_df` (pd.DataFrame): DataFrame with columns `source`, `target`,
-                and `value`, including indices for node mapping.
+        Tuple[pl.DataFrame, Dict[str, int], Dict[str, List[int]]]:
+            - `flow_df` (pl.DataFrame): DataFrame with columns `source`, `target`, `value`, including indices.
             - `node_map` (Dict[str, int]): Mapping of each unique node to an index.
-            - `link` (Dict[str, List[int]]): Dictionary containing lists of `source`,
-                `target`, and `value` indices for each link in the Sankey diagram.
+            - `link` (Dict[str, List[int]]): Dictionary with `source`, `target`, and `value` lists.
     """
     logger.info(f"Starting Sankey flow traversal with columns: {columns_in_flow}")
 
-    # Make a copy of the DataFrame to avoid side effects
-    df = df.copy()
+    if isinstance(df, pd.DataFrame):
+        df = pl.from_pandas(df)
+    else:
+        df = df.clone()
 
     try:
         # Ensure head node label if needed
-        if columns_in_flow[0] == "" or columns_in_flow[0] == ".":
+        if columns_in_flow[0] in ["", "."]:
             columns_in_flow[0] = "."
-            df["."] = head_node_label
+            df = df.with_columns(pl.lit(head_node_label).alias("."))
             logger.debug(f"Set head node label to '{head_node_label}'")
 
-        # Handle columns duplicates
-        df = _add_suffix_to_cross_column_duplicates(df, columns=columns_in_flow)
-        logger.info(f"Handled duplicates in columns: {columns_in_flow}")
-
         # Collect all unique nodes across specified columns
-        all_nodes = pd.unique(df[columns_in_flow].stack())
+        unique_nodes = df.select(columns_in_flow).melt().drop("variable").unique()
+        all_nodes = unique_nodes["value"].to_list()
         node_map = {node: i for i, node in enumerate(all_nodes)}
         logger.info(f"Created node map with {len(node_map)} unique nodes")
 
         # Prepare DataFrame for flow links
-        flow_df = pd.DataFrame(columns=["source", "target", "value"])
+        flow_df = []
 
         # Generate links using a sliding window of columns
         for i in range(2, len(columns_in_flow) + 1):
-            # Select the expanding window of columns
             cols_to_group = columns_in_flow[:i]
+            grouped = df.group_by(cols_to_group).agg(pl.len().alias("value"))
+            grouped = grouped.select([cols_to_group[-2], cols_to_group[-1], "value"])
+            grouped = grouped.rename(
+                {cols_to_group[-2]: "source", cols_to_group[-1]: "target"}
+            )
+            flow_df.append(grouped)
 
-            # Group by the selected columns and sum the values
-            grouped = df.groupby(cols_to_group).size().reset_index(name="value")
-
-            # Extract the last two columns and append them along with the 'value' column
-            grouped = grouped[[cols_to_group[-2], cols_to_group[-1], "value"]]
-
-            # Rename the columns for consistency
-            grouped.columns = ["source", "target", "value"]
-
-            # Append the result to the final DataFrame
-            flow_df = pd.concat([flow_df, grouped])
+        flow_df = pl.concat(flow_df)
 
         # Map source and target nodes to indices
-        flow_df["source_idx"] = flow_df["source"].map(node_map)
-        flow_df["target_idx"] = flow_df["target"].map(node_map)
+        flow_df = flow_df.with_columns(
+            pl.col("source").replace(node_map).alias("source_idx"),
+            pl.col("target").replace(node_map).alias("target_idx"),
+        )
 
         # Create link dictionary for Sankey diagram
         link = {
-            "source": flow_df["source_idx"].tolist(),
-            "target": flow_df["target_idx"].tolist(),
-            "value": flow_df["value"].tolist(),
+            "source": flow_df["source_idx"].to_list(),
+            "target": flow_df["target_idx"].to_list(),
+            "value": flow_df["value"].to_list(),
         }
 
     except Exception as e:
